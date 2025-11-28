@@ -6,14 +6,14 @@ WORKDIR /app
 COPY gradle gradle
 COPY gradlew .
 COPY gradle.properties .
-COPY settings.gradle.kts .
-COPY build.gradle.kts .
+COPY settings.gradle .
 
 # Copy the app module build configuration
-COPY app/build.gradle.kts app/
+COPY app/build.gradle app/
+COPY gradle/libs.versions.toml gradle/ 2>/dev/null || true
 
 # Download dependencies (this layer will be cached)
-RUN gradle dependencies --no-daemon || true
+RUN gradle :app:dependencies --no-daemon || true
 
 # Copy source code
 COPY app/src app/src
